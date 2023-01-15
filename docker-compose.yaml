@@ -1,19 +1,28 @@
 version: '3.4'
 services:
-  server:
-    image: "cernoch/venus-server"
+  venus-server:
+    image: "cernoch/venus-server:latest"
+    restart: always
     ports:
      - "8088:8088"
     volumes:
-     - "./venus-config:/config"
+     - "/srv/data/venus-server:/config"
 
   upnp:
     image: "victronenergy/venus-docker-upnp:latest"
     network_mode: host
-     
+    restart: always
+
   influxdb2:
     image: "influxdb:2.6"
+    restart: always
     ports:
      - "8086:8086"
     volumes:
-     - "./influxdb2:/var/lib/influxdb2"
+     - "/srv/data/influxdb2:/var/lib/influxdb2"
+
+  shelly-logger:
+    image: "cernoch/shelly-logger:latest"
+    restart: always
+    volumes:
+     - "/srv/data/shelly-logger:/config"
